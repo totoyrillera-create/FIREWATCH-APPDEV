@@ -3,11 +3,12 @@
 //  config/db.php  –  Database connection (MySQLi)
 // ============================================================
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');          // Change for production
-define('DB_PASS', '');              // Change for production
-define('DB_NAME', 'firewatch_db1');
-define('DB_PORT', 3306);
+// Pull credentials dynamically from Railway environment variables, fallback to local
+define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
+define('DB_USER', getenv('MYSQLUSER') ?: 'root');          
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');              
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'firewatch_db1');
+define('DB_PORT', getenv('MYSQLPORT') ?: 3306);
 
 function getDB(): mysqli  
 {
