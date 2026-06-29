@@ -3,29 +3,25 @@
 //  config/db.php  –  Database connection (MySQLi)
 // ============================================================
 
-// Pull credentials dynamically from Railway environment variables, fallback to local
-define('DB_HOST', '${RAILWAY_PRIVATE_DOMAIN}');
-define('DB_USER', 'root');          // Change for production
-define('DB_PASS', '${{MYSQL_ROOT_PASSWORD}}');              // Change for production
-define('DB_NAME', '${{MYSQL_DATABASE}}');
-define('DB_PORT', 3306);
+define('DB_HOST', getenv('MYSQLHOST')     ?: 'reseau.proxy.rlwy.net');
+define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'JgEqPwTviMeypmZJCgHPFMmIXHjFdUcS');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
+define('DB_PORT', getenv('MYSQLPORT')     ?: 16589);
 
-function getDB(): mysqli  
+function getDB(): mysqli
 {
     static $conn = null;
     if ($conn !== null) {
         return $conn;
     }
-
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
-
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, (int)DB_PORT);
     if ($conn->connect_error) {
         http_response_code(503);
         die(json_encode([
             'error' => 'Database connection failed: ' . $conn->connect_error
         ]));
     }
-
     $conn->set_charset('utf8mb4');
     return $conn;
 }
