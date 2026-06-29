@@ -4,10 +4,10 @@
 // ============================================================
 
 // Pull credentials dynamically from Railway environment variables, fallback to local
-define('DB_HOST', 'mysql-gwdg.railway.internal');
+define('DB_HOST', '${RAILWAY_PRIVATE_DOMAIN}');
 define('DB_USER', 'root');          // Change for production
-define('DB_PASS', 'JnTAdkGCIlDxvvPnKorKBiSGUMrADVOV');              // Change for production
-define('DB_NAME', 'firewatch_db1');
+define('DB_PASS', '${{MYSQL_ROOT_PASSWORD}}');              // Change for production
+define('DB_NAME', '${{MYSQL_DATABASE}}');
 define('DB_PORT', 3306);
 
 function getDB(): mysqli  
